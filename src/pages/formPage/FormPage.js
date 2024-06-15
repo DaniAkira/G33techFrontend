@@ -53,33 +53,36 @@ const FormPage = () => {
   };
 
   return (
-    <div className="form-container">
+    <div>
       <Header />
-      <form onSubmit={handleSubmit}>
-      <div>
+      <form className="form-container" onSubmit={handleSubmit}>
+        <div className='forms-label project-name'>
           <label>Nome do Projeto</label>
           <input
             type="text"
+            placeholder="Nome do projeto"
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
           />
         </div>
-        <div>
+        <div className='forms-label project-manager'>
           <label>Nomes dos responsáveis</label>
           <input
             type="text"
+            placeholder="Nome dos responsáveis"
             value={projectManager}
             onChange={(e) => setProjectManager(e.target.value)}
           />
         </div>
-        <div>
+        <div className='forms-label project-description'>
           <label>Descrição</label>
           <textarea
+            placeholder="Descrição do projeto"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div>
+        <div className='forms-label tasks'>
           <label>Tasks</label>
           {tasks.map((task, index) => (
             <div key={index} className="task">
@@ -97,11 +100,15 @@ const FormPage = () => {
               />
             </div>
           ))}
-          <button type="button" onClick={handleAddTask}>
-            Adicionar nova task
+          <button className='new-task-btn' type="button" onClick={handleAddTask}>
+            Adicionar nova tarefa
+            <img 
+                src='assets/plus.png'
+                alt="plusbtn"
+            ></img>
           </button>
         </div>
-        <div>
+        <div className='forms-label start-date'>
           <label>Data de início</label>
           <input
             type="date"
@@ -109,7 +116,7 @@ const FormPage = () => {
             onChange={(e) => setStartDate(e.target.value)}
           />
         </div>
-        <div>
+        <div className='forms-label end-date'>
           <label>Data de entrega</label>
           <input
             type="date"

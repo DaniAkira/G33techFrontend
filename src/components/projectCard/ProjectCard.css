@@ -4,6 +4,7 @@
     background-color: #AAFEFD;
     height: 20vh;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #393939;
 }
 
 .card-first-section{
@@ -36,7 +37,7 @@
     height: 75%;
 }
 
-.project-description{
+.card-project-description{
     text-align: start;
     width: 60%;
     padding-left: 1em;

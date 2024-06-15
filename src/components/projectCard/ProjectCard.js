@@ -22,7 +22,7 @@ const ProjectCard = ({ project }) => {
                 </div>
             </div>
             <div className='card-second-section'>
-                <p className='project-description'>{project.description}</p>
+                <p className='card-project-description'>{project.description}</p>
                 <div className="project-dates">
                     <p>Início:</p>
                     <span> {new Date(project.start_date).toLocaleDateString()}</span>
