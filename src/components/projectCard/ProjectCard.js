@@ -7,10 +7,10 @@ const ProjectCard = ({ project }) => {
             <div className='card-first-section'>
                 <p>{project.name}</p>
                 <div className="project-actions">
-                    <button className="edit-btn">
+                    <button className="view-btn">
                         <img 
                             src='assets/search.png'
-                            alt="edit-btn"
+                            alt="view-btn"
                         ></img>
                     </button>
                     <button className="delete-btn">

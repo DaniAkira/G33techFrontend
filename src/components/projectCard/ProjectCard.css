@@ -20,6 +20,7 @@
     width: 60%;
     text-align: left;
     padding-left: 1em;
+    font-size: 16px;
 }
 
 .project-actions{
@@ -39,6 +40,7 @@
     text-align: start;
     width: 60%;
     padding-left: 1em;
+    font-size: 14px;
 }
 
 .project-dates {
@@ -53,7 +55,7 @@
 
 .project-dates p {
     padding-left: 1em;
-    font-size: 12px;
+    font-size: 14px;
     margin: 0;
     text-align: left;
 }
@@ -70,12 +72,12 @@
     
 }
 
-.edit-btn{
+.view-btn{
     background-color: #AAFEFD;
     border: none;
 }
 
-.edit-btn img{
+.view-btn img{
     height: 20px;
 }
 
@@ -85,6 +87,6 @@
 }
 
 .delete-btn img{
-    height: 28px;
+    height: 26px;
 }
 
