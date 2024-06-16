@@ -7,7 +7,6 @@ const ProjectList = () => {
     const [projects, setProjects] = useState([]);
 
     useEffect(() => {
-        console.log('useEffect chamado');
         axios.get('http://localhost:3000/project')
             .then(response => {
                 console.log(response.data);
@@ -16,10 +15,14 @@ const ProjectList = () => {
             .catch(error => console.error('Erro ao buscar projetos:', error));
     }, []);
 
+    const handleProjectDelete = (projectId) => {
+        setProjects(projects.filter(project => project._id !== projectId));
+    }
+
     return (
         <div className="project-list">
             {projects.map(project => (
-                <ProjectCard key={project._id} project={project} />
+                <ProjectCard key={project._id} project={project} onDelete={handleProjectDelete}/>
             ))}
         </div>
     );

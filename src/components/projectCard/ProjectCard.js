@@ -1,7 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Modal from 'react-modal';
+import { useContext } from 'react';
+import { SuccessMessageContext } from '../../contexts/SuccessMessageContext';
 import './ProjectCard.css';
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, onDelete }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { setSuccessMessage } = useContext(SuccessMessageContext);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleDelete = () => {
+        axios.delete(`http://localhost:3000/project/${project._id}`)
+            .then(response => {
+                console.log(response.message);
+                if (response.status === 200) {
+                    console.log(`Projeto ${project.name} deletado`);
+                    setSuccessMessage('Projeto excluido com sucesso.');
+                    onDelete(project._id);
+                } else {
+                    console.error('Erro ao deletar o projeto:', response.statusText);
+                }
+            })
+            .catch(error => console.error('Erro ao buscar projetos:', error));
+        closeModal();
+    };
+
+
     return (
         <div className="project-card">
             <div className='card-first-section'>
@@ -13,7 +45,7 @@ const ProjectCard = ({ project }) => {
                             alt="view-btn"
                         ></img>
                     </button>
-                    <button className="delete-btn">
+                    <button onClick={openModal} className="delete-btn">
                         <img 
                             src='assets/trash.png'
                             alt="trash-btn"
@@ -30,6 +62,23 @@ const ProjectCard = ({ project }) => {
                     <span> {new Date(project.end_date).toLocaleDateString()}</span>
                 </div>
             </div>
+            <Modal 
+                isOpen={isModalOpen}
+                onRequestClose={closeModal}
+                contentLabel="Confirm Delete"
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <h2>Deletar o projeto {project.name}?</h2>
+                <div className="modal-actions">
+                    <button onClick={closeModal} className="modal-button">
+                        Cancelar
+                    </button>
+                    <button onClick={handleDelete} className="modal-button">
+                        Deletar
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 }

@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import axios from 'axios';
-import './FormPage.css'; // Importe o arquivo CSS para os estilos
+import './FormPage.css';
+import { SuccessMessageContext } from '../../contexts/SuccessMessageContext';
 
 const FormPage = () => {
   const navigate = useNavigate();
+  const { setSuccessMessage } = useContext(SuccessMessageContext);
   const [projectName, setProjectName] = useState('');
   const [projectManager, setProjectManager] = useState('');
   const [description, setDescription] = useState('');
   const [tasks, setTasks] = useState([{ name: '', description: '' }]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-
+  
   const handleAddTask = () => {
     setTasks([...tasks, '']);
   };
@@ -41,9 +43,11 @@ const FormPage = () => {
 
     try {
         const response = await axios.post('http://localhost:3000/project', projectData);
-        if (response.status === 200) {
+        console.log(response.status);
+        if (response.status === 201) {
           console.log('Projeto criado com sucesso!');
-          // Redirecionar ou mostrar uma mensagem de sucesso conforme necessário
+          setSuccessMessage('Projeto cadastrado com sucesso!');
+          navigate('/');
         } else {
           console.error('Erro ao criar o projeto:', response.statusText);
         }
@@ -125,7 +129,7 @@ const FormPage = () => {
           />
         </div>
         <div className="buttons">
-          <button type="button" onClick={() => navigate(-1)}>
+          <button type="button" onClick={() => navigate('/')}>
             Voltar
           </button>
           <button type="submit" onClick={handleSubmit}>Cadastrar</button>
