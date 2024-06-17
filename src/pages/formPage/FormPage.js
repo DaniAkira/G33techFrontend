@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import axios from 'axios';
@@ -7,16 +7,26 @@ import { MessageContext } from '../../contexts/MessageContext';
 
 const FormPage = () => {
   const navigate = useNavigate();
-  const { setMessage } = useContext(MessageContext);
+  const { message, setMessage } = useContext(MessageContext);
   const [projectName, setProjectName] = useState('');
   const [projectManager, setProjectManager] = useState('');
   const [description, setDescription] = useState('');
   const [tasks, setTasks] = useState([{ name: '', description: '' }]);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  useEffect(() => {
+    if (message) {
+    const timer = setTimeout(() => {
+        setMessage('');
+    }, 2000);
+
+    return () => clearTimeout(timer);
+    }
+  }, [message, setMessage]);
   
   const handleAddTask = () => {
-    setTasks([...tasks, '']);
+    setTasks([...tasks, {  name: '', description: '' }]);
   };
 
   const handleTaskChange = (index, field, value) => {
@@ -48,7 +58,8 @@ const FormPage = () => {
         !projectData.end_date ||
         !projectData.tasks
       ){
-        console.log('Necessário todos os campos para cadastro.');;
+        console.log('Necessário todos os campos para cadastro.');
+        setMessage('Todos os campos são obrigatórios para cadastro.');
       } else {
         try {
             const response = await axios.post('http://localhost:3000/project', projectData);
@@ -57,8 +68,6 @@ const FormPage = () => {
               console.log('Projeto criado com sucesso!');
               setMessage('Projeto cadastrado com sucesso!');
               navigate('/');
-            } else {
-              console.error('Erro ao criar o projeto:', response.statusText);
             }
           } catch (error) {
             console.error('Erro ao criar o projeto:', error);
@@ -68,11 +77,11 @@ const FormPage = () => {
 
   return (
     <div>
-      {/* {message && (
+      {message && (
             <div className="success-message">
                 {message}
             </div>
-        )} */}
+        )}
       <Header />
       <form className="form-container" onSubmit={handleSubmit}>
         <div className='forms-label project-name'>
