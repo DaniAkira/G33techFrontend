@@ -3,22 +3,22 @@ import Header from '../../components/header/Header';
 import ProjectList from '../../components/projectList/ProjectList';
 import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
-import { SuccessMessageContext } from '../../contexts/SuccessMessageContext';
+import { MessageContext } from '../../contexts/MessageContext';
 
 const HomePage = () => {
     const navigate = useNavigate();
 
-    const { successMessage, setSuccessMessage } = useContext(SuccessMessageContext);
+    const { message, setMessage } = useContext(MessageContext);
 
     useEffect(() => {
-        if (successMessage) {
+        if (message) {
         const timer = setTimeout(() => {
-            setSuccessMessage('');
+            setMessage('');
         }, 2000);
 
         return () => clearTimeout(timer);
         }
-    }, [successMessage, setSuccessMessage]);
+    }, [message, setMessage]);
 
     const handleAddProjectClick = () => {
         navigate('/registerProject');
@@ -26,9 +26,9 @@ const HomePage = () => {
 
     return (
         <div className="home-page">
-        {successMessage && (
+        {message && (
             <div className="success-message">
-                {successMessage}
+                {message}
             </div>
         )}
             <Header />

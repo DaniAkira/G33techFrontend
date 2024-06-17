@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import { useContext } from 'react';
-import { SuccessMessageContext } from '../../contexts/SuccessMessageContext';
+import { MessageContext } from '../../contexts/MessageContext';
 import './ProjectCard.css';
 
 const ProjectCard = ({ project, onDelete }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { setSuccessMessage } = useContext(SuccessMessageContext);
+    const { setMessage } = useContext(MessageContext);
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -23,7 +23,7 @@ const ProjectCard = ({ project, onDelete }) => {
                 console.log(response.message);
                 if (response.status === 200) {
                     console.log(`Projeto ${project.name} deletado`);
-                    setSuccessMessage('Projeto excluido com sucesso.');
+                    setMessage('Projeto excluido com sucesso.');
                     onDelete(project._id);
                 } else {
                     console.error('Erro ao deletar o projeto:', response.statusText);

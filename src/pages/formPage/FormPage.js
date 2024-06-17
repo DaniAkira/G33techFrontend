@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../components/header/Header';
 import axios from 'axios';
 import './FormPage.css';
-import { SuccessMessageContext } from '../../contexts/SuccessMessageContext';
+import { MessageContext } from '../../contexts/MessageContext';
 
 const FormPage = () => {
   const navigate = useNavigate();
-  const { setSuccessMessage } = useContext(SuccessMessageContext);
+  const { setMessage } = useContext(MessageContext);
   const [projectName, setProjectName] = useState('');
   const [projectManager, setProjectManager] = useState('');
   const [description, setDescription] = useState('');
@@ -40,24 +40,39 @@ const FormPage = () => {
         }))
     };
     console.log({ projectData });
-
-    try {
-        const response = await axios.post('http://localhost:3000/project', projectData);
-        console.log(response.status);
-        if (response.status === 201) {
-          console.log('Projeto criado com sucesso!');
-          setSuccessMessage('Projeto cadastrado com sucesso!');
-          navigate('/');
-        } else {
-          console.error('Erro ao criar o projeto:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Erro ao criar o projeto:', error);
-      };
+    if(
+        !projectData.name ||
+        !projectData.project_manager ||
+        !projectData.description ||
+        !projectData.start_date ||
+        !projectData.end_date ||
+        !projectData.tasks
+      ){
+        console.log('Necessário todos os campos para cadastro.');;
+      } else {
+        try {
+            const response = await axios.post('http://localhost:3000/project', projectData);
+            console.log(response.status);
+            if (response.status === 201) {
+              console.log('Projeto criado com sucesso!');
+              setMessage('Projeto cadastrado com sucesso!');
+              navigate('/');
+            } else {
+              console.error('Erro ao criar o projeto:', response.statusText);
+            }
+          } catch (error) {
+            console.error('Erro ao criar o projeto:', error);
+          };
+      }
   };
 
   return (
     <div>
+      {/* {message && (
+            <div className="success-message">
+                {message}
+            </div>
+        )} */}
       <Header />
       <form className="form-container" onSubmit={handleSubmit}>
         <div className='forms-label project-name'>

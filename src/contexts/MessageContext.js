@@ -1,13 +1,13 @@
 import React, { createContext, useState } from 'react';
 
-export const SuccessMessageContext = createContext();
+export const MessageContext = createContext();
 
-export const SuccessMessageProvider = ({ children }) => {
-  const [successMessage, setSuccessMessage] = useState('');
+export const MessageProvider = ({ children }) => {
+  const [message, setMessage] = useState('');
 
   return (
-    <SuccessMessageContext.Provider value={{ successMessage, setSuccessMessage }}>
+    <MessageContext.Provider value={{ message, setMessage }}>
       {children}
-    </SuccessMessageContext.Provider>
+    </MessageContext.Provider>
   );
 };
