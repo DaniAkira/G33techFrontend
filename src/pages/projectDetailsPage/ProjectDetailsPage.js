@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../../components/header/Header";
 import { useNavigate } from "react-router-dom";
 import ProjectDetails from "../../components/projectDetails/ProjectDetails";
+import './ProjectDetailsPage.css';
 
 const ProjectDetailsPage = () => {
     const navigate = useNavigate();
