@@ -156,7 +156,7 @@ const FormPage = () => {
           <button type="button" onClick={() => navigate('/')}>
             Voltar
           </button>
-          <button type="submit" onClick={handleSubmit}>Cadastrar</button>
+          <button type="submit">Cadastrar</button>
         </div>
       </form>
     </div>
