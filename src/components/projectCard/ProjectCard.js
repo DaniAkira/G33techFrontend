@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
-import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MessageContext } from '../../contexts/MessageContext';
 import './ProjectCard.css';
 
 const ProjectCard = ({ project, onDelete }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { setMessage } = useContext(MessageContext);
+    const navigate = useNavigate();
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -15,6 +16,10 @@ const ProjectCard = ({ project, onDelete }) => {
 
     const closeModal = () => {
         setIsModalOpen(false);
+    };
+
+    const handleView = () => {
+        navigate(`/project/${project._id}`, { state: { project } });
     };
 
     const handleDelete = () => {
@@ -39,7 +44,7 @@ const ProjectCard = ({ project, onDelete }) => {
             <div className='card-first-section'>
                 <p>{project.name}</p>
                 <div className="project-actions">
-                    <button className="view-btn">
+                    <button onClick={handleView} className="view-btn">
                         <img 
                             src='assets/search.png'
                             alt="view-btn"

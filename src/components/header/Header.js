@@ -8,12 +8,12 @@ const Header = () => {
             onClick={() => window.location.href = '/'}
             >
             <img 
-                src="assets/logoSimbolo.png" 
+                src="../assets/logoSimbolo.png" 
                 alt="Logo" 
                 className="logo1" 
             />
             <img 
-                src="assets/logoEscrito-removebg-preview.png" 
+                src="../assets/logoEscrito-removebg-preview.png" 
                 alt="Logo" 
                 className="logo2" 
             />
