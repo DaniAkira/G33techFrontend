@@ -230,7 +230,7 @@ const EditFormsPage = () => {
           <button type="button" onClick={() => navigate(-1)}>
             Voltar
           </button>
-          <button type="submit">Editar</button>
+          <button type="submit">Concluir</button>
         </div>
       </form>
       <Modal
