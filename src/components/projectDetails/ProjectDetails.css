@@ -55,17 +55,3 @@
     margin-top: 4px;
 }
 
-.task-title {
-    display: flex;
-    
-}
-
-.trash-btn {
-    background-color: #12ACAA;
-    border: none;
-}
-
-.trash-btn img{
-    height: 2em;
-    padding-left: 12em;
-}

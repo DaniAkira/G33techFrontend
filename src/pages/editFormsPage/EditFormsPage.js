@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { MessageContext } from "../../contexts/MessageContext";
 import Modal from 'react-modal';
 import axios from "axios";
+import './EditFormsPage.css';
 
 const EditFormsPage = () => {
   const { state } = useLocation();
@@ -15,8 +16,8 @@ const EditFormsPage = () => {
   const [projectManager, setProjectManager] = useState(project.project_manager || '');
   const [description, setDescription] = useState(project.description || '');
   const [tasks, setTasks] = useState(project.tasks);
-  const [startDate, setStartDate] = useState(project.startDate || '');
-  const [endDate, setEndDate] = useState(project.endDate || '');
+  const [startDate, setStartDate] = useState(project.start_date ? project.start_date.split('T')[0] : '');
+  const [endDate, setEndDate] = useState(project.end_date ? project.end_date.split('T')[0] : '');
   const [taskId, setTaskId] = useState('');
 
   useEffect(() => {
@@ -38,7 +39,14 @@ const EditFormsPage = () => {
   };
 
   const handleAddTask = () => {
-    setTasks([...tasks, { name: '', description: '' }]);
+    setTasks([...tasks, { name: '', description: '', isNew: true }]);
+  };
+
+  const handleTaskChange = (index, field, value) => {
+    const updatedTasks = tasks.map((task, i) => 
+      i === index ? { ...task, [field]: value } : task
+    );
+    setTasks(updatedTasks);
   };
 
   const handleDeleteTask = () => {
@@ -59,13 +67,16 @@ const EditFormsPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const newTasks = tasks.filter(task => task.isNew);
+    const existingTasks = tasks.filter(task => !task.isNew);
+
     const projectData = {
       name: projectName,
       project_manager: projectManager,
       description: description,
       start_date: startDate,
       end_date: endDate,
-      tasks: tasks.map(task => ({
+      tasks: existingTasks.map(task => ({
         name: task.name,
         description: task.description
       }))
@@ -82,9 +93,44 @@ const EditFormsPage = () => {
       setMessage('Todos os campos são obrigatórios..');
     } else {
       try {
+        if (newTasks.length > 0) {
+          for (const newTask of newTasks) {
+            if (!newTask.name || !newTask.description) {
+              console.error('Nova tarefa inválida:', newTask);
+              throw new Error('Nova tarefa inválida. Verifique se todas as novas tarefas têm nome e descrição.');
+            }
+
+            const newTaskData = {
+              task: {
+                name: newTask.name,
+                description: newTask.description
+              }
+            };
+    
+            console.log(`newTaskData: ${newTaskData}`);
+    
+            const responseNewTask = await axios.post(
+              `http://localhost:3000/project/${project._id}/tasks`, 
+              newTaskData,
+              {
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+              }
+            );
+    
+            console.log('responseNewTask status:', responseNewTask.status);
+            console.log('responseNewTask data:', responseNewTask.data);
+    
+            if (responseNewTask.status !== 201) {
+              throw new Error('Erro ao adicionar novas tasks');
+            }
+          }
+        }
+
         const response = await axios.patch(`http://localhost:3000/project/${project._id}`, projectData);
         console.log(response.status);
-        if (response.status === 201) {
+        if (response.status === 200) {
           console.log('Projeto editado com sucesso!');
           setMessage('Projeto editado com sucesso!');
           navigate('/');
@@ -147,10 +193,12 @@ const EditFormsPage = () => {
               <input
                 type="text"
                 value={task.name}
+                onChange={(e) => handleTaskChange(index, 'name', e.target.value)}
               />
               <input
                 type="text"
                 value={task.description}
+                onChange={(e) => handleTaskChange(index, 'description', e.target.value)}
               />
             </div>
           ))}
